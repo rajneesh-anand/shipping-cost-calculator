@@ -4,36 +4,18 @@ import "./assets/css/main.css";
 import "./assets/css/elegant-font-icons.css";
 import App from "./App.jsx";
 
-// import { init, miniApp, mainButton, shareURL } from "@telegram-apps/sdk";
-
-import {
-  initMiniApp,
-  mockTelegramEnv,
-  parseInitData,
-} from "@telegram-apps/sdk";
-
-// const initializeTelegramSDK = async () => {
-//   try {
-//     await init();
-
-//     if (miniApp.ready.isAvailable()) {
-//       await miniApp.ready();
-//       console.log("Mini App готово");
-//     }
-//   } catch (error) {
-//     console.error("Ошибка инициализации:", error);
-//   }
-// };
+import { init, miniApp, mainButton, shareURL } from "@telegram-apps/sdk";
 
 const initializeTelegramSDK = async () => {
   try {
-    //initialize the real Telegram environment
-    const [miniApp] = initMiniApp();
-    await miniApp.ready();
-    miniApp.setHeaderColor("#fcb69f");
+    await init();
+    if (miniApp.ready.isAvailable()) {
+      await miniApp.ready();
+      await miniApp.setHeaderColor("#fcb69f");
+      console.log("Mini App готово");
+    }
   } catch (error) {
-    // In case of an error, initialize a mock environment
-    console.error("Error initializing Telegram:", error);
+    console.error("Ошибка инициализации:", error);
   }
 };
 
