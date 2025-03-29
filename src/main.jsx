@@ -22,17 +22,17 @@ const initializeTelegramSDK = async () => {
       console.log("Mini App готово");
     }
 
-    if (setMiniAppHeaderColor.isAvailable()) {
-      setMiniAppHeaderColor("bg_color");
-      miniAppHeaderColor(); // 'bg_color'
+    if (miniApp.setHeaderColor.isAvailable()) {
+      miniApp.setHeaderColor("bg_color");
+      miniApp.headerColor(); // 'bg_color'
     }
 
     if (
-      setMiniAppHeaderColor.isAvailable() &&
-      setMiniAppHeaderColor.supports("rgb")
+      miniApp.setHeaderColor.isAvailable() &&
+      miniApp.setHeaderColor.supports("rgb")
     ) {
-      setMiniAppHeaderColor("#aabbcc");
-      miniAppHeaderColor();
+      miniApp.setHeaderColor("#ff6900");
+      miniApp.headerColor(); // '#aabbcc'
     }
   } catch (error) {
     console.error("Ошибка инициализации:", error);
