@@ -12,7 +12,6 @@ const initializeTelegramSDK = async () => {
 
     if (miniApp.ready.isAvailable()) {
       await miniApp.ready();
-      miniApp.setHeaderColor("#fcb69f");
       console.log("Mini App готово");
     }
   } catch (error) {
@@ -21,7 +20,7 @@ const initializeTelegramSDK = async () => {
 };
 
 initializeTelegramSDK();
-// miniApp.setHeaderColor("#fcb69f");
+miniApp.setHeaderColor("#fcb69f");
 // Монтируем главную кнопку
 // if (mainButton.mount.isAvailable()) {
 //   mainButton.mount(); // Убедимся, что кнопка установлена
