@@ -4,7 +4,14 @@ import "./assets/css/main.css";
 import "./assets/css/elegant-font-icons.css";
 import App from "./App.jsx";
 
-import { init, miniApp, mainButton, shareURL } from "@telegram-apps/sdk";
+import {
+  init,
+  miniApp,
+  mainButton,
+  shareURL,
+  setMiniAppHeaderColor,
+  miniAppHeaderColor,
+} from "@telegram-apps/sdk";
 
 const initializeTelegramSDK = async () => {
   try {
@@ -14,13 +21,26 @@ const initializeTelegramSDK = async () => {
       await miniApp.ready();
       console.log("Mini App готово");
     }
+
+    if (setMiniAppHeaderColor.isAvailable()) {
+      setMiniAppHeaderColor("bg_color");
+      miniAppHeaderColor(); // 'bg_color'
+    }
+
+    if (
+      setMiniAppHeaderColor.isAvailable() &&
+      setMiniAppHeaderColor.supports("rgb")
+    ) {
+      setMiniAppHeaderColor("#aabbcc");
+      miniAppHeaderColor();
+    }
   } catch (error) {
     console.error("Ошибка инициализации:", error);
   }
 };
 
 initializeTelegramSDK();
-miniApp.setHeaderColor("#fcb69f");
+
 // Монтируем главную кнопку
 // if (mainButton.mount.isAvailable()) {
 //   mainButton.mount(); // Убедимся, что кнопка установлена
