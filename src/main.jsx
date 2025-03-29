@@ -4,35 +4,41 @@ import "./assets/css/main.css";
 import "./assets/css/elegant-font-icons.css";
 import App from "./App.jsx";
 
-import { init, miniApp, mainButton, shareURL } from "@telegram-apps/sdk";
+// import { init, miniApp, mainButton, shareURL } from "@telegram-apps/sdk";
+
+import {
+  initMiniApp,
+  mockTelegramEnv,
+  parseInitData,
+} from "@telegram-apps/sdk";
+
+// const initializeTelegramSDK = async () => {
+//   try {
+//     await init();
+
+//     if (miniApp.ready.isAvailable()) {
+//       await miniApp.ready();
+//       console.log("Mini App готово");
+//     }
+//   } catch (error) {
+//     console.error("Ошибка инициализации:", error);
+//   }
+// };
 
 const initializeTelegramSDK = async () => {
   try {
-    await init();
-
-    if (miniApp.ready.isAvailable()) {
-      await miniApp.ready();
-      console.log("Mini App готово");
-    }
+    //initialize the real Telegram environment
+    const [miniApp] = initMiniApp();
+    await miniApp.ready();
+    miniApp.setHeaderColor("#fcb69f");
   } catch (error) {
-    console.error("Ошибка инициализации:", error);
+    // In case of an error, initialize a mock environment
+    console.error("Error initializing Telegram:", error);
   }
 };
 
+// Initialize SDK
 initializeTelegramSDK();
-
-if (miniApp.setHeaderColor.isAvailable()) {
-  miniApp.setHeaderColor("bg_color");
-  miniApp.headerColor(); // 'bg_color'
-}
-
-if (
-  miniApp.setHeaderColor.isAvailable() &&
-  miniApp.setHeaderColor.supports("rgb")
-) {
-  miniApp.setHeaderColor("#ff6900");
-  miniApp.headerColor(); // '#aabbcc'
-}
 
 // Монтируем главную кнопку
 // if (mainButton.mount.isAvailable()) {
