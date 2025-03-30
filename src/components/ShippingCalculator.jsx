@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import InputIcon from "./ui/form-control/input-icon";
 import InputText from "./ui/form-control/input-text";
+import InputNumber from "./ui/form-control/input-number";
 import Select from "./ui/form-control/select/select";
 import Container from "./ui/common/container";
 
@@ -9,9 +9,29 @@ const educationOptions = [
   { value: "Standard (25-30 дней)", label: "Standard (25-30 дней)" },
 ];
 
+const fromCityOptions = [
+  { value: "Beijing", label: "Beijing" },
+  { value: "Guangzhou", label: "Guangzhou" },
+  { value: "Hangzhou", label: "Hangzhou" },
+  { value: "Shanghai", label: "Shanghai" },
+  { value: "Shenzhen", label: "Shenzhen" },
+  { value: "Suzhou", label: "Suzhou" },
+  { value: "Tianjin", label: "Tianjin" },
+];
+
+const toCityOptions = [
+  { value: "Moscow", label: "Moscow" },
+  { value: "St. Petersburg", label: "St. Petersburg" },
+  { value: "Yakterinburg", label: "Yakterinburg" },
+  { value: "Samara", label: "Samara" },
+  { value: "Saratov", label: "Saratov" },
+];
+
 const ShippingCalculator = () => {
   const [processing, setProcessing] = useState(false);
   const [education, setEducation] = useState(educationOptions[0]);
+  const [fromCity, setFromCity] = useState(fromCityOptions[1]);
+  const [toCity, setToCity] = useState(toCityOptions[0]);
   const [formData, setFormData] = useState({
     originCountry: "CN",
     destinationCountry: "RU",
@@ -137,12 +157,12 @@ const ShippingCalculator = () => {
       <form onSubmit={handleSubmit} noValidate className="w-full ">
         <div className="grid grid-cols-12 md:gap-4">
           <Select
-            name="province"
+            name="fromcity"
             className="col-span-7 md:col-span-6 mb-2"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             text="От (Город)"
-            defaultValue={education}
-            options={educationOptions}
+            defaultValue={fromCity}
+            options={fromCityOptions}
             isSearchable={false}
             onChange={(value) => setEducation(value)}
           />
@@ -155,12 +175,12 @@ const ShippingCalculator = () => {
           />
 
           <Select
-            name="province"
+            name="tocity"
             className="col-span-7 md:col-span-6 mb-3"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             text="До (Город)"
-            defaultValue={education}
-            options={educationOptions}
+            defaultValue={toCity}
+            options={toCityOptions}
             isSearchable={false}
             onChange={(value) => setEducation(value)}
           />
@@ -172,39 +192,32 @@ const ShippingCalculator = () => {
             text="Пин-код"
           />
 
-          <InputText
-            className="col-span-6 md:col-span-6 mb-3 ml-1"
+          <InputNumber
+            className="col-span-6 md:col-span-6 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
+            inputClassName="max-w-[76px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Длина (мм)"
           />
 
-          <InputText
+          <InputNumber
             className="col-span-6 md:col-span-6 mb-3 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[60px] border border-solid border-orange-500 text-[14px] md:text-base"
+            inputClassName="max-w-[64px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Ширина (мм)"
           />
-          <InputText
-            className="col-span-6 md:col-span-6 mb-3 ml-1"
+          <InputNumber
+            className="col-span-6 md:col-span-6 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Высота (мм)"
           />
 
-          <InputText
+          <InputNumber
             className="col-span-6 md:col-span-6 mb-3 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Масса (кг.)"
           />
-          {/* 
-          <InputText
-            className="col-span-12 md:col-span-6 mb-3"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[10px] md:text-base"
-            inputClassName="max-w-[140px] border border-solid border-orange-500"
-            text="Расстояние (км)"
-          /> */}
 
           <Select
             name="province"
