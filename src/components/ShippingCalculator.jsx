@@ -136,41 +136,80 @@ const ShippingCalculator = () => {
     <Container className="my-4">
       <form onSubmit={handleSubmit} noValidate className="w-full ">
         <div className="grid grid-cols-12 md:gap-4">
-          <InputText
-            className="relative col-span-12 md:col-span-6 mb-2"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium"
-            inputClassName="border border-solid border-orange-500"
-            text="Вес товара (кг.)"
+          <Select
+            name="province"
+            className="col-span-7 md:col-span-6 mb-2"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            text="От (Город)"
+            defaultValue={education}
+            options={educationOptions}
+            isSearchable={false}
+            onChange={(value) => setEducation(value)}
           />
+
           <InputText
-            className="relative col-span-12 md:col-span-6 mb-2"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium"
-            inputClassName="border border-solid border-orange-500"
-            text="Длина товара (мм)"
-          />
-          <InputText
-            className="col-span-12 md:col-span-6 mb-2"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium"
-            inputClassName="border border-solid border-orange-500"
-            text="Ширина товара (мм)"
-          />
-          <InputText
-            className="col-span-12 md:col-span-6 mb-2"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium"
-            inputClassName="border border-solid border-orange-500"
-            text="Высота товара (мм)"
-          />
-          <InputText
-            className="col-span-12 md:col-span-6 mb-2"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium"
-            inputClassName="border border-solid border-orange-500"
-            text="Расстояние (км)"
+            className="relative col-span-5 md:col-span-6 mb-2 ml-1"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Пин-код"
           />
 
           <Select
             name="province"
-            className="col-span-12 md:col-span-6 mb-2"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium"
+            className="col-span-7 md:col-span-6 mb-3"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            text="До (Город)"
+            defaultValue={education}
+            options={educationOptions}
+            isSearchable={false}
+            onChange={(value) => setEducation(value)}
+          />
+
+          <InputText
+            className="col-span-5 md:col-span-6 mb-3 ml-1"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Пин-код"
+          />
+
+          <InputText
+            className="col-span-6 md:col-span-6 mb-3 ml-1"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Длина (мм)"
+          />
+
+          <InputText
+            className="col-span-6 md:col-span-6 mb-3 ml-1"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[60px] border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Ширина (мм)"
+          />
+          <InputText
+            className="col-span-6 md:col-span-6 mb-3 ml-1"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Высота (мм)"
+          />
+
+          <InputText
+            className="col-span-6 md:col-span-6 mb-3 ml-1"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Масса (кг.)"
+          />
+          {/* 
+          <InputText
+            className="col-span-12 md:col-span-6 mb-3"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[10px] md:text-base"
+            inputClassName="max-w-[140px] border border-solid border-orange-500"
+            text="Расстояние (км)"
+          /> */}
+
+          <Select
+            name="province"
+            className="col-span-12 md:col-span-6 mb-3"
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             text="Способ доставки"
             defaultValue={education}
             options={educationOptions}

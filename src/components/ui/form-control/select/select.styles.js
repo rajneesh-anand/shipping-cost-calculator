@@ -33,6 +33,9 @@ export const selectStyles = {
   }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: 2,
     color: "rgb(var(--text-heading))",
     "&:hover": {
       color: "rgb(var(--text-heading))",
@@ -57,13 +60,13 @@ export const selectStyles = {
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    paddingLeft: state.isRtl ? 4 : 16,
+    paddingLeft: state.isRtl ? 4 : 4,
     paddingRight: state.isRtl ? 16 : 4,
   }),
   singleValue: (provided, _) => ({
     ...provided,
-    fontSize: "0.875rem",
-    fontWeight: 600,
+    fontSize: "14px",
+    // fontWeight: 600,
     color: "rgb(var(--text-heading))",
   }),
   multiValue: (provided, _) => ({
@@ -94,7 +97,7 @@ export const selectStyles = {
   }),
   placeholder: (provided, _) => ({
     ...provided,
-    fontSize: "0.875rem",
+    fontSize: "text-[12px] md:text-base",
     color: "rgba(107, 114, 128, 0.7)",
   }),
   noOptionsMessage: (provided, _) => ({

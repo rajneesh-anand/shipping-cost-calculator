@@ -34,7 +34,7 @@ const Select = React.forwardRef(
         <div className="flex">
           <span
             className={clsx(
-              "flex items-center whitespace-nowrap border border-e-0 px-3 py-[0.25rem] text-center text-base leading-[1.6]",
+              "flex items-center whitespace-nowrap border border-e-0 px-2 py-[0.25rem] text-center  leading-[1.6]",
               textSpanClassName
             )}
             id="basic-addon3"
@@ -46,8 +46,8 @@ const Select = React.forwardRef(
             ref={ref}
             styles={selectStyles}
             id={name}
-            {...rest}
             className="grow"
+            {...rest}
           />
         </div>
         {error && <p className=" text-[13px] text-rose-600">{error}</p>}
