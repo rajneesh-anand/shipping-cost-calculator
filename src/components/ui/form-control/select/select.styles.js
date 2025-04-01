@@ -33,9 +33,9 @@ export const selectStyles = {
   }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingRight: 2,
+    // paddingTop: 0,
+    // paddingBottom: 0,
+    // paddingRight: 2,
     color: "rgb(var(--text-heading))",
     "&:hover": {
       color: "rgb(var(--text-heading))",

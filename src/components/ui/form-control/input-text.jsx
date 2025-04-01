@@ -34,15 +34,17 @@ const InputText = React.forwardRef(
         )}
 
         <div className="flex ">
-          <span
-            className={clsx(
-              "flex grow items-center whitespace-nowrap border border-e-0 px-2 py-[0.25rem] text-center leading-[1.6]",
-              textSpanClassName
-            )}
-            id="basic-addon3"
-          >
-            {text}
-          </span>
+          {text && (
+            <span
+              className={clsx(
+                "flex grow items-center whitespace-nowrap border border-e-0 px-2 py-[0.25rem] text-center leading-[1.6]",
+                textSpanClassName
+              )}
+              id="basic-addon3"
+            >
+              {text}
+            </span>
+          )}
 
           <input
             id={name}

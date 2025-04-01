@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import InputText from "./ui/form-control/input-text";
 import InputNumber from "./ui/form-control/input-number";
 import Select from "./ui/form-control/select/select";
 import Container from "./ui/common/container";
+import { useForm } from "react-hook-form";
 
 const educationOptions = [
   { value: "Express (12-18 дней)", label: "Express (12-18 дней)" },
@@ -29,19 +29,23 @@ const toCityOptions = [
 
 const ShippingCalculator = () => {
   const [processing, setProcessing] = useState(false);
+  const [density, setDensity] = useState("");
   const [education, setEducation] = useState(educationOptions[0]);
   const [fromCity, setFromCity] = useState(fromCityOptions[1]);
   const [toCity, setToCity] = useState(toCityOptions[0]);
-  const [formData, setFormData] = useState({
-    originCountry: "CN",
-    destinationCountry: "RU",
-    weight: "",
-    length: "",
-    width: "",
-    height: "",
-    shippingMethod: "air",
-    packageType: "package",
-  });
+  // const [formData, setFormData] = useState({
+  //   weight: "",
+  //   length: "",
+  //   width: "",
+  //   height: "",
+  // });
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
 
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -68,13 +72,13 @@ const ShippingCalculator = () => {
     { value: "pallet", label: "Pallet" },
   ];
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   const calculateVolumetricWeight = (length, width, height) => {
     return (length * width * height) / 5000; // Standard volumetric divisor for air freight
@@ -147,18 +151,27 @@ const ShippingCalculator = () => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    calculateShipping();
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   calculateShipping();
+  // };
+
+  async function onSubmit({ weight, length, width, height }) {
+    let wt = parseFloat(weight);
+    let len = parseFloat(length) / 100;
+    let wid = parseFloat(width) / 100;
+    let ht = parseFloat(height) / 100;
+    let density = wt / (len * wid * ht);
+    console.log(density);
+  }
 
   return (
     <Container className="my-4">
-      <form onSubmit={handleSubmit} noValidate className="w-full ">
+      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full ">
         <div className="grid grid-cols-12 md:gap-4">
-          <Select
+          {/* <Select
             name="fromcity"
-            className="col-span-7 md:col-span-6 mb-2"
+            className="col-span-7 md:col-span-6 mb-3"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             text="От (Город)"
             defaultValue={fromCity}
@@ -166,14 +179,12 @@ const ShippingCalculator = () => {
             isSearchable={false}
             onChange={(value) => setEducation(value)}
           />
-
           <InputText
             className="relative col-span-5 md:col-span-6 mb-2 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Пин-код"
           />
-
           <Select
             name="tocity"
             className="col-span-7 md:col-span-6 mb-3"
@@ -184,21 +195,98 @@ const ShippingCalculator = () => {
             isSearchable={false}
             onChange={(value) => setEducation(value)}
           />
-
           <InputText
             className="col-span-5 md:col-span-6 mb-3 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Пин-код"
+          /> */}
+
+          <InputNumber
+            name="weight"
+            className="col-span-12 md:col-span-12 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Вес (кг.)"
+            {...register("weight", {
+              required: "weight is required ! ",
+            })}
+            error={errors.weight?.message}
+            onKeyUp={handleChange}
+          />
+
+          <div className="col-span-12 md:col-span-12  pb-1.5">
+            <label className="font-medium text-[16px] md:text-base ">
+              Размеры (Д×Ш×В) см
+            </label>
+          </div>
+
+          <InputNumber
+            name="length"
+            className="col-span-4 md:col-span-4 mb-3 "
+            inputClassName="w-full border border-e-0 md:border-e-1 md:border-e-none border-solid border-orange-500 text-[14px] md:text-base"
+            placeholder="Длина"
+            {...register("length", {
+              required: "required ! ",
+            })}
+            error={errors.length?.message}
+            onKeyUp={handleChange}
           />
 
           <InputNumber
+            name="width"
+            className="col-span-4 md:col-span-4 mb-3 "
+            inputClassName="w-full border border-e-0 md:border-e-1 border-solid border-orange-500 text-[14px] md:text-base"
+            placeholder="Ширина"
+            {...register("width", {
+              required: "required ! ",
+            })}
+            error={errors.width?.message}
+            onKeyUp={handleChange}
+          />
+          <InputNumber
+            name="height"
+            className="col-span-4 md:col-span-4 mb-3 "
+            inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
+            placeholder="Высота"
+            {...register("height", {
+              required: "required ! ",
+            })}
+            error={errors.height?.message}
+            onKeyUp={handleChange}
+          />
+
+          <InputNumber
+            className="col-span-12 md:col-span-6 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Цена за кг ($)"
+          />
+          <InputNumber
+            className="col-span-12 md:col-span-6 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Упаковка за m³ ($)"
+          />
+          <InputNumber
+            className="col-span-12 md:col-span-6 mb-3 "
+            textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[136px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Стоимость товара ($)"
+          />
+          <InputNumber
+            className="col-span-12 md:col-span-6 mb-3 "
+            textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="max-w-[144px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Разгрузка 1 место (₽)"
+          />
+
+          {/* <InputNumber
             className="col-span-6 md:col-span-6 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[76px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Длина (мм)"
           />
-
           <InputNumber
             className="col-span-6 md:col-span-6 mb-3 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
@@ -210,15 +298,13 @@ const ShippingCalculator = () => {
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Высота (мм)"
-          />
-
-          <InputNumber
+          /> */}
+          {/* <InputNumber
             className="col-span-6 md:col-span-6 mb-3 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
             text="Масса (кг.)"
-          />
-
+          /> */}
           <Select
             name="province"
             className="col-span-12 md:col-span-6 mb-3"
@@ -230,6 +316,14 @@ const ShippingCalculator = () => {
             onChange={(value) => setEducation(value)}
           />
         </div>
+
+        {/* {density && (
+          <div className="col-span-12 md:col-span-12  pb-1.5">
+            <label className="font-medium text-[16px] md:text-base ">
+              {density}
+            </label>
+          </div>
+        )} */}
 
         <div className="relative">
           <button

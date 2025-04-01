@@ -34,15 +34,17 @@ const InputNumber = React.forwardRef(
         )}
 
         <div className="flex ">
-          <span
-            className={clsx(
-              "flex grow items-center whitespace-nowrap border border-e-0 px-2 py-[0.25rem] text-center leading-[1.6]",
-              textSpanClassName
-            )}
-            id="basic-addon3"
-          >
-            {text}
-          </span>
+          {text && (
+            <span
+              className={clsx(
+                "flex items-center whitespace-nowrap border border-e-0 px-3 py-[0.25rem] text-center leading-[1.6]",
+                textSpanClassName
+              )}
+              id="basic-addon3"
+            >
+              {text}
+            </span>
+          )}
 
           <input
             id={name}
@@ -50,7 +52,7 @@ const InputNumber = React.forwardRef(
             type={type}
             ref={ref}
             className={clsx(
-              "m-0 md:max-w-none md:grow bg-transparent bg-clip-padding px-2 py-[0.25rem] leading-[1.6] outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none",
+              "m-0 bg-transparent bg-clip-padding px-3 py-[0.25rem] leading-[1.6] outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none",
               inputClassName
             )}
             placeholder={placeholder}
