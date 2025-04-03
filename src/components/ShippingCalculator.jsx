@@ -34,6 +34,7 @@ const goodsTypeOptions = [
 // ];
 
 const ShippingCalculator = () => {
+  const [price, setPrice] = useState(0);
   const [processing, setProcessing] = useState(false);
   const [shippingMode, setShippingMode] = useState(shippingModeOptions[0]);
   const [goodsType, setGoodsType] = useState(goodsTypeOptions[0]);
@@ -48,10 +49,10 @@ const ShippingCalculator = () => {
   // });
 
   const [data, setData] = useState({
+    price: "",
     cubemtr: "",
     density: "",
     productcost: "",
-    price: "",
     cost: "",
     pkgprice: "",
     insurance: "",
@@ -75,12 +76,70 @@ const ShippingCalculator = () => {
   //   }));
   // };
 
+  const priceRate = (den) => {
+    return new Promise((resolve, reject) => {
+      let price = 0;
+      switch (true) {
+        case den >= 1 && den <= 100:
+          price = (230 / cubemtr).toFixed(2);
+          break;
+        case den >= 101 && den <= 110:
+          price = 2.5;
+          break;
+        case den >= 111 && den <= 120:
+          price = 2.4;
+          break;
+        case den >= 121 && den <= 130:
+          price = 2.3;
+          break;
+        case den >= 131 && den <= 140:
+          price = 2.2;
+          break;
+        case den >= 141 && den <= 150:
+          price = 2.1;
+          break;
+        case den >= 151 && den <= 160:
+          price = 2;
+          break;
+        case den >= 161 && den <= 170:
+          price = 1.9;
+          break;
+        case den >= 171 && den <= 180:
+          price = 1.8;
+          break;
+        case den >= 181 && den <= 190:
+          price = 1.7;
+          break;
+        case den >= 191 && den <= 200:
+          price = 1.6;
+          break;
+        case den >= 201 && den <= 250:
+          price(1.5);
+          break;
+        case den >= 151 && den <= 300:
+          price = 1.4;
+          break;
+        case den >= 301 && den <= 350:
+          price = 1.3;
+          break;
+        case den >= 151 && den <= 400:
+          price = 1.2;
+          break;
+        case den >= 141 && den <= 100000:
+          price = 1.1;
+          break;
+        default:
+          alert("oops something went wrong !");
+      }
+      resolve(price);
+    });
+  };
+
   async function onSubmit({
     weight,
     length,
     width,
     height,
-    price,
     packaging,
     productcost,
     unloading,
@@ -94,9 +153,10 @@ const ShippingCalculator = () => {
     let wid = parseFloat(width) / 100;
     let ht = parseFloat(height) / 100;
     let cubemtr = parseFloat(len * wid * ht);
-    let prc = parseFloat(price);
     let density = parseFloat(wt / cubemtr);
-    let cost = parseFloat(density * prc).toFixed(2);
+    let price = await priceRate(density);
+    console.log(price);
+    let cost = parseFloat(density * price).toFixed(2);
     let pktCost = parseFloat(pkg * cubemtr).toFixed(2);
     let insurance = parseFloat((prodcost / 100) * 1).toFixed(2);
     const totalCost =
@@ -106,10 +166,10 @@ const ShippingCalculator = () => {
       parseFloat(unload);
 
     setData({
+      price: price,
       cubemtr: cubemtr.toFixed(2),
       productcost: prodcost,
       density: density.toFixed(2),
-      price: prc,
       cost: cost,
       insurance: insurance,
       pkgprice: pkg,
@@ -207,7 +267,7 @@ const ShippingCalculator = () => {
             error={errors.height?.message}
           />
 
-          <InputNumber
+          {/* <InputNumber
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
@@ -216,12 +276,12 @@ const ShippingCalculator = () => {
               required: "required ! ",
             })}
             error={errors.price?.message}
-          />
+          /> */}
           <InputNumber
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Упаковка за m³ ($)"
+            text="Объем в m³ ($)"
             {...register("packaging", {
               required: "required ! ",
             })}
@@ -230,8 +290,8 @@ const ShippingCalculator = () => {
           <InputNumber
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[136px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Стоимость товара ($)"
+            inputClassName="max-w-[96px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Объявленная стоимость груза ($)"
             {...register("productcost", {
               required: "required ! ",
             })}
@@ -349,7 +409,7 @@ const ShippingCalculator = () => {
           <table className="table-auto w-full">
             <tbody>
               <tr>
-                <td className="font-medium uppercase text-xs">Cost</td>
+                <td className="font-medium uppercase text-xs">Цена</td>
                 <td className="text-xs font-normal">
                   {data.density} X {data.price}$
                 </td>
@@ -358,7 +418,7 @@ const ShippingCalculator = () => {
                 </td>
               </tr>
               <tr>
-                <td className="font-medium uppercase text-xs">Packaging</td>
+                <td className="font-medium uppercase text-xs">Упаковка</td>
                 <td className="text-xs font-normal">
                   {data.pkgprice} X {data.cubemtr} m³
                 </td>
@@ -367,7 +427,7 @@ const ShippingCalculator = () => {
                 </td>
               </tr>
               <tr>
-                <td className="font-medium uppercase text-xs">Insurance</td>
+                <td className="font-medium uppercase text-xs">Страховка</td>
                 <td className="text-xs font-normal">
                   1 % of {data.productcost}$
                 </td>
@@ -376,15 +436,15 @@ const ShippingCalculator = () => {
                 </td>
               </tr>
               <tr>
-                <td className="font-medium uppercase text-xs">Unloading</td>
+                <td className="font-medium uppercase text-xs">Разгрузка </td>
                 <td></td>
                 <td className="text-right font-semibold text-[18px]">
                   {data.unloading}$
                 </td>
               </tr>
               <tr>
-                <td className="uppercase font-semibold text-[20px]">
-                  Total Cost
+                <td className="uppercase font-semibold text-xs">
+                  Общая стоимость
                 </td>
                 <td></td>
                 <td className="text-right font-semibold text-[20px]">
