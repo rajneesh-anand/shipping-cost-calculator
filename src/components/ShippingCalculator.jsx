@@ -49,6 +49,7 @@ const ShippingCalculator = () => {
   });
 
   const [data, setData] = useState({
+    weight: "",
     price: "",
     cubemtr: "",
     density: "",
@@ -166,7 +167,7 @@ const ShippingCalculator = () => {
     let density = parseFloat(wt / cubemtr);
     let price = await priceRate(density);
 
-    let cost = parseFloat(density * price).toFixed(2);
+    let cost = parseFloat(wt * price).toFixed(2);
     let pktCost = parseFloat(pkg * cubemtr).toFixed(2);
     let insurance = parseFloat((prodcost / 100) * 1).toFixed(2);
     const totalCost =
@@ -176,6 +177,7 @@ const ShippingCalculator = () => {
       parseFloat(unload);
 
     setData({
+      weight: wt,
       price: price,
       cubemtr: cubemtr.toFixed(2),
       productcost: prodcost,
@@ -437,7 +439,7 @@ const ShippingCalculator = () => {
               <tr>
                 <td className="font-medium uppercase text-xs">Цена</td>
                 <td className="text-xs font-normal">
-                  {data.density} X {data.price}$
+                  {data.weight} X {data.price}$
                 </td>
                 <td className="text-right font-semibold text-[18px]">
                   {data.cost}$
