@@ -41,12 +41,12 @@ const ShippingCalculator = () => {
 
   // const [fromCity, setFromCity] = useState(fromCityOptions[1]);
   // const [toCity, setToCity] = useState(toCityOptions[0]);
-  // const [formData, setFormData] = useState({
-  //   weight: "",
-  //   length: "",
-  //   width: "",
-  //   height: "",
-  // });
+  const [formData, setFormData] = useState({
+    weight: "",
+    length: "",
+    width: "",
+    height: "",
+  });
 
   const [data, setData] = useState({
     price: "",
@@ -68,13 +68,23 @@ const ShippingCalculator = () => {
     formState: { errors },
   } = useForm();
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const calculateDensity = () => {
+    let wt = parseFloat(formData.weight);
+    let len = parseFloat(formData.length) / 100;
+    let wid = parseFloat(formData.width) / 100;
+    let ht = parseFloat(formData.height) / 100;
+    let cubemtr = parseFloat(len * wid * ht);
+    let density = parseFloat(wt / cubemtr);
+    return density.toFixed(2);
+  };
 
   const priceRate = (den) => {
     return new Promise((resolve, reject) => {
@@ -155,7 +165,7 @@ const ShippingCalculator = () => {
     let cubemtr = parseFloat(len * wid * ht);
     let density = parseFloat(wt / cubemtr);
     let price = await priceRate(density);
-    console.log(price);
+
     let cost = parseFloat(density * price).toFixed(2);
     let pktCost = parseFloat(pkg * cubemtr).toFixed(2);
     let insurance = parseFloat((prodcost / 100) * 1).toFixed(2);
@@ -227,12 +237,25 @@ const ShippingCalculator = () => {
               required: "weight is required ! ",
             })}
             error={errors.weight?.message}
+            onChange={handleChange}
           />
 
-          <div className="col-span-12 md:col-span-12  pb-1.5">
+          <div className="col-span-6 md:col-span-6  pb-1.5">
             <label className="font-medium text-[16px] md:text-base ">
               Размеры (Д×Ш×В) см
             </label>
+          </div>
+          <div className="col-span-6 md:col-span-6  pb-1.5">
+            {!isNaN(calculateDensity()) && (
+              <div className="flex justify-end">
+                <p className="font-medium text-[16px] md:text-base text-end  text-amber-900">
+                  Плотность
+                </p>
+                <p className="pl-2 font-semibold text-[16px] md:text-base text-end text-amber-800 ">
+                  {calculateDensity()}{" "}
+                </p>
+              </div>
+            )}
           </div>
 
           <InputNumber
@@ -244,6 +267,7 @@ const ShippingCalculator = () => {
               required: "required ! ",
             })}
             error={errors.length?.message}
+            onChange={handleChange}
           />
 
           <InputNumber
@@ -255,6 +279,7 @@ const ShippingCalculator = () => {
               required: "required ! ",
             })}
             error={errors.width?.message}
+            onChange={handleChange}
           />
           <InputNumber
             name="height"
@@ -265,6 +290,7 @@ const ShippingCalculator = () => {
               required: "required ! ",
             })}
             error={errors.height?.message}
+            onChange={handleChange}
           />
 
           {/* <InputNumber
@@ -281,7 +307,7 @@ const ShippingCalculator = () => {
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Объем в m³ ($)"
+            text="Объем в m³"
             {...register("packaging", {
               required: "required ! ",
             })}
