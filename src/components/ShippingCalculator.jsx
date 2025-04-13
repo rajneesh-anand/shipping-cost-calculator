@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InputNumber from "./ui/form-control/input-number";
+import InputText from "./ui/form-control/input-text";
 import Select from "./ui/form-control/select/select";
 import Container from "./ui/common/container";
 import { useForm } from "react-hook-form";
@@ -34,13 +35,13 @@ const goodsTypeOptions = [
 // ];
 
 const ShippingCalculator = () => {
-  const [price, setPrice] = useState(0);
   const [processing, setProcessing] = useState(false);
   const [shippingMode, setShippingMode] = useState(shippingModeOptions[0]);
   const [goodsType, setGoodsType] = useState(goodsTypeOptions[0]);
 
   // const [fromCity, setFromCity] = useState(fromCityOptions[1]);
   // const [toCity, setToCity] = useState(toCityOptions[0]);
+
   const [formData, setFormData] = useState({
     weight: "",
     length: "",
@@ -231,12 +232,18 @@ const ShippingCalculator = () => {
 
           <InputNumber
             name="weight"
+            label="Вес не должен превышать 4000 кг."
+            labelClassName="text-rose-600"
             className="col-span-12 md:col-span-12 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
             text="Вес (кг.)"
             {...register("weight", {
-              required: "weight is required ! ",
+              required: "required ! ",
+              pattern: {
+                value: /^([1-9]|[1-9]\d{1,2}|[1-3]\d{3}|4000)(?:\.\d{1,3})?$/,
+                message: "Вес не должен превышать 4000 кг.",
+              },
             })}
             error={errors.weight?.message}
             onChange={handleChange}
@@ -262,11 +269,17 @@ const ShippingCalculator = () => {
 
           <InputNumber
             name="length"
+            label="Макс. 400 см."
+            labelClassName="text-rose-600"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 md:border-e-none border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Длина"
             {...register("length", {
               required: "required ! ",
+              pattern: {
+                value: /^([1-9][0-9]?|400)$/,
+                message: "Макс. 400 см.",
+              },
             })}
             error={errors.length?.message}
             onChange={handleChange}
@@ -274,22 +287,34 @@ const ShippingCalculator = () => {
 
           <InputNumber
             name="width"
+            label="Макс. 250 см."
+            labelClassName="text-rose-600"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Ширина"
             {...register("width", {
               required: "required ! ",
+              pattern: {
+                value: /^([1-9][0-9]?|250)$/,
+                message: "Макс. 250 см.",
+              },
             })}
             error={errors.width?.message}
             onChange={handleChange}
           />
           <InputNumber
             name="height"
+            label="Макс. 250 см."
+            labelClassName="text-rose-600"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Высота"
             {...register("height", {
               required: "required ! ",
+              pattern: {
+                value: /^([1-9][0-9]?|250)$/,
+                message: "Макс. 250 см.",
+              },
             })}
             error={errors.height?.message}
             onChange={handleChange}

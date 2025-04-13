@@ -25,7 +25,7 @@ const InputText = React.forwardRef(
           <label
             htmlFor={name}
             className={clsx(
-              "inline-block font-normal text-sm leading-none mb-2",
+              "inline-block font-normal leading-none mb-2",
               labelClassName
             )}
           >
