@@ -237,7 +237,7 @@ const ShippingCalculator = () => {
           <InputNumber
             name="weight"
             label="Вес не должен превышать 4000 кг."
-            labelClassName="text-rose-600"
+            labelClassName="text-rose-600 text-xs font-semibold"
             className="col-span-12 md:col-span-12 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
@@ -274,7 +274,7 @@ const ShippingCalculator = () => {
           <InputNumber
             name="length"
             label="1 - 400 см"
-            labelClassName="text-rose-600 "
+            labelClassName="text-rose-600 text-xs font-semibold"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 md:border-e-none border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Длина"
@@ -292,7 +292,7 @@ const ShippingCalculator = () => {
           <InputNumber
             name="width"
             label="1 - 250 см"
-            labelClassName="text-rose-600 "
+            labelClassName="text-rose-600 text-xs font-semibold "
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Ширина"
@@ -309,7 +309,7 @@ const ShippingCalculator = () => {
           <InputNumber
             name="height"
             label="1 - 250 см"
-            labelClassName="text-rose-600"
+            labelClassName="text-rose-600 text-xs font-semibold"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Высота"
