@@ -195,7 +195,11 @@ const ShippingCalculator = () => {
 
   return (
     <Container className="my-4">
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full ">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="w-full p-3 md:p-6 bg-white border border-gray-200 rounded-lg shadow-sm"
+      >
         <div className="grid grid-cols-12 md:gap-4">
           {/* <Select
             name="fromcity"
@@ -256,7 +260,7 @@ const ShippingCalculator = () => {
           </div>
           <div className="col-span-6 md:col-span-6  pb-1.5">
             {!isNaN(calculateDensity()) && (
-              <div className="flex justify-end">
+              <div className="flex justify-end bg-blue-100 hover:bg-blue-200 text-blue-800 text-sm font-medium  px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-blue-400 border border-blue-400  items-center">
                 <p className="font-medium text-[16px] md:text-base text-end  text-amber-900">
                   Плотность
                 </p>
@@ -269,8 +273,8 @@ const ShippingCalculator = () => {
 
           <InputNumber
             name="length"
-            label="Макс. 400 см."
-            labelClassName="text-rose-600"
+            label="1 - 400 см"
+            labelClassName="text-rose-600 "
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 md:border-e-none border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Длина"
@@ -278,7 +282,7 @@ const ShippingCalculator = () => {
               required: "required ! ",
               pattern: {
                 value: /^([1-9][0-9]?|400)$/,
-                message: "Макс. 400 см.",
+                message: "Макс.400 см.",
               },
             })}
             error={errors.length?.message}
@@ -287,8 +291,8 @@ const ShippingCalculator = () => {
 
           <InputNumber
             name="width"
-            label="Макс. 250 см."
-            labelClassName="text-rose-600"
+            label="1 - 250 см"
+            labelClassName="text-rose-600 "
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Ширина"
@@ -304,7 +308,7 @@ const ShippingCalculator = () => {
           />
           <InputNumber
             name="height"
-            label="Макс. 250 см."
+            label="1 - 250 см"
             labelClassName="text-rose-600"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
