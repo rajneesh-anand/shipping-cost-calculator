@@ -281,12 +281,15 @@ const ShippingCalculator = () => {
             {...register("length", {
               required: "required ! ",
               pattern: {
-                value: /^([1-9][0-9]?|400)$/,
+                value: /^(?:[1-3][0-9]{1,2}|[1-9][0-9]{0,1}|400)$/,
                 message: "Макс.400 см.",
               },
             })}
             error={errors.length?.message}
             onChange={handleChange}
+            onKeyDown={(e) =>
+              (e.keyCode === 69 || e.keyCode === 190) && e.preventDefault()
+            }
           />
 
           <InputNumber
@@ -299,12 +302,15 @@ const ShippingCalculator = () => {
             {...register("width", {
               required: "required ! ",
               pattern: {
-                value: /^([1-9][0-9]?|250)$/,
+                value: /^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|250)$/,
                 message: "Макс. 250 см.",
               },
             })}
             error={errors.width?.message}
             onChange={handleChange}
+            onKeyDown={(e) =>
+              (e.keyCode === 69 || e.keyCode === 190) && e.preventDefault()
+            }
           />
           <InputNumber
             name="height"
@@ -316,12 +322,15 @@ const ShippingCalculator = () => {
             {...register("height", {
               required: "required ! ",
               pattern: {
-                value: /^([1-9][0-9]?|250)$/,
+                value: /^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|250)$/,
                 message: "Макс. 250 см.",
               },
             })}
             error={errors.height?.message}
             onChange={handleChange}
+            onKeyDown={(e) =>
+              (e.keyCode === 69 || e.keyCode === 190) && e.preventDefault()
+            }
           />
 
           {/* <InputNumber
