@@ -126,7 +126,7 @@ const ShippingCalculator = () => {
           price = 1.6;
           break;
         case den >= 201 && den <= 250:
-          price(1.5);
+          price = 1.5;
           break;
         case den >= 151 && den <= 300:
           price = 1.4;
@@ -367,7 +367,7 @@ const ShippingCalculator = () => {
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[144px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Разгрузка 1 место ($)"
+            text="Разгрузка 1 место"
             {...register("unloading", {
               required: "required ! ",
             })}
