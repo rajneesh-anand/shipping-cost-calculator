@@ -39,12 +39,9 @@ const ShippingCalculator = () => {
   const [processing, setProcessing] = useState(false);
   const [shippingMode, setShippingMode] = useState(shippingModeOptions[0]);
   const [goodsType, setGoodsType] = useState(goodsTypeOptions[0]);
-  const [testValue, setTestValue] = useState(0);
-  const [volume, setVolume] = useState(0);
+  const [totalVolume, setTotalVolume] = useState(0);
 
   const [isChecked, setIsChecked] = useState(false);
-
-  console.log(isChecked);
 
   const checkHandler = () => {
     setIsChecked(!isChecked);
@@ -74,9 +71,16 @@ const ShippingCalculator = () => {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
   } = useForm();
+
+  const calculateVolume = () => {
+    let len = parseFloat(formData.length) / 100;
+    let wid = parseFloat(formData.width) / 100;
+    let ht = parseFloat(formData.height) / 100;
+    let volume = parseFloat(len * wid * ht);
+    return volume.toFixed(2);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,72 +90,88 @@ const ShippingCalculator = () => {
     }));
   };
 
-  const calculateDensity = () => {
-    let wt = parseFloat(formData.weight);
-    let len = parseFloat(formData.length) / 100;
-    let wid = parseFloat(formData.width) / 100;
-    let ht = parseFloat(formData.height) / 100;
-    let cubemtr = parseFloat(len * wid * ht);
-    let density = parseFloat(wt / cubemtr);
-    return density.toFixed(2);
+  const handleVolumeChange = (e) => {
+    if (e.keyCode === 69 || e.keyCode === 190) {
+      e.preventDefault();
+      return;
+    } else {
+      let NumberOfItems = parseInt(e.target.value);
+      let Volume = calculateVolume();
+      let TotalVolume = NumberOfItems * Volume;
+      setTotalVolume(TotalVolume.toFixed(2));
+    }
   };
+
+  // const calculateDensity = () => {
+  //   let wt = parseFloat(formData.weight);
+  //   let len = parseFloat(formData.length) / 100;
+  //   let wid = parseFloat(formData.width) / 100;
+  //   let ht = parseFloat(formData.height) / 100;
+  //   let cubemtr = parseFloat(len * wid * ht);
+  //   let density = parseFloat(wt / cubemtr);
+  //   return density.toFixed(2);
+  // };
 
   const priceRate = (den) => {
     return new Promise((resolve, reject) => {
-      let price = 0;
-      switch (true) {
-        case den >= 1 && den <= 100:
-          price = (230 / cubemtr).toFixed(2);
-          break;
-        case den >= 101 && den <= 110:
-          price = 2.5;
-          break;
-        case den >= 111 && den <= 120:
-          price = 2.4;
-          break;
-        case den >= 121 && den <= 130:
-          price = 2.3;
-          break;
-        case den >= 131 && den <= 140:
-          price = 2.2;
-          break;
-        case den >= 141 && den <= 150:
-          price = 2.1;
-          break;
-        case den >= 151 && den <= 160:
-          price = 2;
-          break;
-        case den >= 161 && den <= 170:
-          price = 1.9;
-          break;
-        case den >= 171 && den <= 180:
-          price = 1.8;
-          break;
-        case den >= 181 && den <= 190:
-          price = 1.7;
-          break;
-        case den >= 191 && den <= 200:
-          price = 1.6;
-          break;
-        case den >= 201 && den <= 250:
-          price = 1.5;
-          break;
-        case den >= 151 && den <= 300:
-          price = 1.4;
-          break;
-        case den >= 301 && den <= 350:
-          price = 1.3;
-          break;
-        case den >= 151 && den <= 400:
-          price = 1.2;
-          break;
-        case den >= 141 && den <= 100000:
-          price = 1.1;
-          break;
-        default:
-          alert("oops something went wrong !");
+      try {
+        let price = 0;
+        switch (true) {
+          // case den >= 1 && den <= 100:
+          //   price = (230 / cubemtr).toFixed(2);
+          //   break;
+          case den >= 101 && den <= 110:
+            price = 2.5;
+            break;
+          case den >= 111 && den <= 120:
+            price = 2.4;
+            break;
+          case den >= 121 && den <= 130:
+            price = 2.3;
+            break;
+          case den >= 131 && den <= 140:
+            price = 2.2;
+            break;
+          case den >= 141 && den <= 150:
+            price = 2.1;
+            break;
+          case den >= 151 && den <= 160:
+            price = 2;
+            break;
+          case den >= 161 && den <= 170:
+            price = 1.9;
+            break;
+          case den >= 171 && den <= 180:
+            price = 1.8;
+            break;
+          case den >= 181 && den <= 190:
+            price = 1.7;
+            break;
+          case den >= 191 && den <= 200:
+            price = 1.6;
+            break;
+          case den >= 201 && den <= 250:
+            price = 1.5;
+            break;
+          case den >= 151 && den <= 300:
+            price = 1.4;
+            break;
+          case den >= 301 && den <= 350:
+            price = 1.3;
+            break;
+          case den >= 151 && den <= 400:
+            price = 1.2;
+            break;
+          case den >= 141 && den <= 100000:
+            price = 1.1;
+            break;
+          default:
+            alert("oops something went wrong !");
+        }
+        resolve(price);
+      } catch (error) {
+        reject(error);
       }
-      resolve(price);
     });
   };
 
@@ -261,29 +281,17 @@ const ShippingCalculator = () => {
             onChange={handleChange}
           />
 
-          <div className="col-span-6 md:col-span-6  pb-1.5">
+          <div className="col-span-12">
             <label className="font-medium text-[16px] md:text-base ">
               Размеры (Д×Ш×В) см
             </label>
-          </div>
-          <div className="col-span-6 md:col-span-6  pb-1.5">
-            {!isNaN(calculateDensity()) && (
-              <div className="flex justify-end text-blue-800 text-sm font-medium  px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-blue-400 border border-blue-400  items-center">
-                <p className="font-medium text-[16px] md:text-base text-end  text-amber-900">
-                  Плотность
-                </p>
-                <p className="pl-2 font-semibold text-[16px] md:text-base text-end text-amber-800 ">
-                  {calculateDensity()}{" "}
-                </p>
-              </div>
-            )}
           </div>
 
           <InputNumber
             name="length"
             label="1 - 400 см"
             labelClassName="text-rose-600 text-xs font-semibold"
-            className="col-span-4 md:col-span-4 mb-3 "
+            className="col-span-4 md:col-span-4 mb-2"
             inputClassName="w-full border border-e-0 md:border-e-1 md:border-e-none border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Длина"
             {...register("length", {
@@ -304,7 +312,7 @@ const ShippingCalculator = () => {
             name="width"
             label="1 - 250 см"
             labelClassName="text-rose-600 text-xs font-semibold "
-            className="col-span-4 md:col-span-4 mb-3 "
+            className="col-span-4 md:col-span-4 mb-2"
             inputClassName="w-full border border-e-0 md:border-e-1 border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Ширина"
             {...register("width", {
@@ -324,7 +332,7 @@ const ShippingCalculator = () => {
             name="height"
             label="1 - 250 см"
             labelClassName="text-rose-600 text-xs font-semibold"
-            className="col-span-4 md:col-span-4 mb-3 "
+            className="col-span-4 md:col-span-4 mb-2"
             inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Высота"
             {...register("height", {
@@ -341,92 +349,60 @@ const ShippingCalculator = () => {
             }
           />
 
-          {/* <InputNumber
-            className="col-span-12 md:col-span-6 mb-3 "
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Цена за кг ($)"
-            {...register("price", {
-              required: "required ! ",
-            })}
-            error={errors.price?.message}
-          /> */}
-          <InputNumber
-            className="col-span-12 md:col-span-6 mb-3 "
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Объем в m³"
-            // {...register("packaging", {
-            //   required: "required ! ",
-            // })}
-            // error={errors.packaging?.message}
-            onChange={(e) => setVolume(e.target.value)}
-          />
+          {!isNaN(calculateVolume()) && (
+            <div className="col-span-12 md:col-span-12 mb-2">
+              <div className="flex justify-end items-center">
+                <p className="font-medium text-[14px] md:text-base text-end">
+                  Объем в m³ =
+                </p>
+                <p className="pl-2 font-medium text-[14px] md:text-base text-end">
+                  {calculateVolume()} m³
+                </p>
+              </div>
+            </div>
+          )}
 
           <InputNumber
-            className="col-span-12 md:col-span-3 mb-3 "
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
-            text="hjdsghfdhsghg"
-            // {...register("packaging", {
-            //   required: "required ! ",
-            // })}
-            // error={errors.packaging?.message}
-            onChange={(e) =>
-              setTestValue(parseFloat(volume) * parseFloat(e.target.value))
-            }
-          />
-          <InputNumber
-            className="col-span-12 md:col-span-3 mb-3 "
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
-            text="hjdsghfdhsghg"
-            {...register("packaging", {
-              required: "required ! ",
-            })}
-            error={errors.packaging?.message}
-            placeholder={testValue}
-          />
-
-          <InputNumber
-            className="col-span-12 md:col-span-6 mb-3 "
+            name="noofbox"
+            className="col-span-12 mb-2"
             textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[96px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
+            inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
+            text="Количество предметов"
+            {...register("noofbox", {
+              required: "required ! ",
+              pattern: {
+                value: /^(?:[1-3][0-9]{1,2}|[1-9][0-9]{0,1}|400)$/,
+                message: "1-400",
+              },
+            })}
+            error={errors.noofbox?.message}
+            onChange={handleVolumeChange}
+          />
+
+          {!isNaN(totalVolume) && totalVolume > 0 && (
+            <div className="col-span-12  mb-2">
+              <div className="flex justify-end items-center">
+                <p className="font-medium text-[14px] md:text-base text-end">
+                  Общий Объем в m³ =
+                </p>
+                <p className="pl-2 font-medium text-[14px] md:text-base text-end">
+                  {totalVolume} m³
+                </p>
+              </div>
+            </div>
+          )}
+
+          <InputNumber
+            className="col-span-12  mb-2 "
+            textSpanClassName="grow  md:grow-0 border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
             text="Объявленная стоимость груза ($)"
             {...register("productcost", {
               required: "required ! ",
             })}
             error={errors.productcost?.message}
           />
-          <InputNumber
-            className="col-span-12 md:col-span-6 mb-3 "
-            textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[144px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Разгрузка 1 место"
-            {...register("unloading", {
-              required: "required ! ",
-            })}
-            error={errors.unloading?.message}
-          />
 
-          {/* <InputNumber
-            className="col-span-6 md:col-span-6 mb-3 "
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[76px] border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Длина (мм)"
-          />
-          <InputNumber
-            className="col-span-6 md:col-span-6 mb-3 ml-1"
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[64px] border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Ширина (мм)"
-          />
-          <InputNumber
-            className="col-span-6 md:col-span-6 mb-3 "
-            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
-            inputClassName="max-w-[68px] border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Высота (мм)"
-          /> */}
           {/* <InputNumber
             className="col-span-6 md:col-span-6 mb-3 ml-1"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
@@ -435,7 +411,7 @@ const ShippingCalculator = () => {
           /> */}
           <Select
             name="goods"
-            className="col-span-12 md:col-span-6 mb-3"
+            className="col-span-12 md:col-span-6 mb-2"
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             text="Вид груза (характер)"
             defaultValue={goodsType}
@@ -458,18 +434,18 @@ const ShippingCalculator = () => {
         <CheckBox
           name="test1"
           className="col-span-12 md:col-span-6 mb-3 "
-          text="Разгрузка 1 место"
+          text="Загрузка 1 места"
           textClassName="font-medium text-[14px] md:text-base"
           onChange={checkHandler}
         />
 
-        {/* {density && (
-          <div className="col-span-12 md:col-span-12  pb-1.5">
-            <label className="font-medium text-[16px] md:text-base ">
-              {density}
-            </label>
-          </div>
-        )} */}
+        <CheckBox
+          name="test2"
+          className="col-span-12 md:col-span-6 mb-3 "
+          text="Разгрузка 1 место"
+          textClassName="font-medium text-[14px] md:text-base"
+          onChange={checkHandler}
+        />
 
         <div className="relative">
           {processing ? (
