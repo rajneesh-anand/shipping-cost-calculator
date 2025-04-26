@@ -13,7 +13,6 @@ const InputText = React.forwardRef(
       textSpanClassName,
       inputClassName,
       labelClassName,
-      iconClass,
       text,
       ...rest
     },

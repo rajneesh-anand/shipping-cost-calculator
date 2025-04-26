@@ -13,7 +13,6 @@ const InputNumber = React.forwardRef(
       textSpanClassName,
       inputClassName,
       labelClassName,
-      iconClass,
       text,
       ...rest
     },

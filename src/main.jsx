@@ -4,7 +4,7 @@ import "./assets/css/main.css";
 import "./assets/css/elegant-font-icons.css";
 import App from "./App.jsx";
 
-import { init, miniApp, mainButton, shareURL } from "@telegram-apps/sdk";
+import { init, miniApp } from "@telegram-apps/sdk";
 
 const initializeTelegramSDK = async () => {
   try {
@@ -21,7 +21,6 @@ const initializeTelegramSDK = async () => {
 
 // Initialize SDK
 initializeTelegramSDK();
-
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
