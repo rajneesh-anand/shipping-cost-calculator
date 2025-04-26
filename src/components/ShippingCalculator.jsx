@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputNumber from "./ui/form-control/input-number";
 import InputText from "./ui/form-control/input-text";
+import CheckBox from "./ui/form-control/check-box";
 import Select from "./ui/form-control/select/select";
 import Container from "./ui/common/container";
 import { useForm } from "react-hook-form";
@@ -38,9 +39,16 @@ const ShippingCalculator = () => {
   const [processing, setProcessing] = useState(false);
   const [shippingMode, setShippingMode] = useState(shippingModeOptions[0]);
   const [goodsType, setGoodsType] = useState(goodsTypeOptions[0]);
+  const [testValue, setTestValue] = useState(0);
+  const [volume, setVolume] = useState(0);
 
-  // const [fromCity, setFromCity] = useState(fromCityOptions[1]);
-  // const [toCity, setToCity] = useState(toCityOptions[0]);
+  const [isChecked, setIsChecked] = useState(false);
+
+  console.log(isChecked);
+
+  const checkHandler = () => {
+    setIsChecked(!isChecked);
+  };
 
   const [formData, setFormData] = useState({
     weight: "",
@@ -260,7 +268,7 @@ const ShippingCalculator = () => {
           </div>
           <div className="col-span-6 md:col-span-6  pb-1.5">
             {!isNaN(calculateDensity()) && (
-              <div className="flex justify-end bg-blue-100 hover:bg-blue-200 text-blue-800 text-sm font-medium  px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-blue-400 border border-blue-400  items-center">
+              <div className="flex justify-end text-blue-800 text-sm font-medium  px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-blue-400 border border-blue-400  items-center">
                 <p className="font-medium text-[16px] md:text-base text-end  text-amber-900">
                   Плотность
                 </p>
@@ -348,11 +356,38 @@ const ShippingCalculator = () => {
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
             text="Объем в m³"
+            // {...register("packaging", {
+            //   required: "required ! ",
+            // })}
+            // error={errors.packaging?.message}
+            onChange={(e) => setVolume(e.target.value)}
+          />
+
+          <InputNumber
+            className="col-span-12 md:col-span-3 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="hjdsghfdhsghg"
+            // {...register("packaging", {
+            //   required: "required ! ",
+            // })}
+            // error={errors.packaging?.message}
+            onChange={(e) =>
+              setTestValue(parseFloat(volume) * parseFloat(e.target.value))
+            }
+          />
+          <InputNumber
+            className="col-span-12 md:col-span-3 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="hjdsghfdhsghg"
             {...register("packaging", {
               required: "required ! ",
             })}
             error={errors.packaging?.message}
+            placeholder={testValue}
           />
+
           <InputNumber
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
@@ -419,6 +454,14 @@ const ShippingCalculator = () => {
             onChange={(value) => setShippingMode(value)}
           />
         </div>
+
+        <CheckBox
+          name="test1"
+          className="col-span-12 md:col-span-6 mb-3 "
+          text="Разгрузка 1 место"
+          textClassName="font-medium text-[14px] md:text-base"
+          onChange={checkHandler}
+        />
 
         {/* {density && (
           <div className="col-span-12 md:col-span-12  pb-1.5">
