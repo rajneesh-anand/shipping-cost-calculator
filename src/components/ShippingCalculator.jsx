@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import InputNumber from "./ui/form-control/input-number";
 import InputText from "./ui/form-control/input-text";
+import CheckBox from "./ui/form-control/check-box";
 import Select from "./ui/form-control/select/select";
 import Container from "./ui/common/container";
 import { useForm } from "react-hook-form";
@@ -38,9 +39,16 @@ const ShippingCalculator = () => {
   const [processing, setProcessing] = useState(false);
   const [shippingMode, setShippingMode] = useState(shippingModeOptions[0]);
   const [goodsType, setGoodsType] = useState(goodsTypeOptions[0]);
+  const [testValue, setTestValue] = useState(0);
+  const [volume, setVolume] = useState(0);
 
-  // const [fromCity, setFromCity] = useState(fromCityOptions[1]);
-  // const [toCity, setToCity] = useState(toCityOptions[0]);
+  const [isChecked, setIsChecked] = useState(false);
+
+  console.log(isChecked);
+
+  const checkHandler = () => {
+    setIsChecked(!isChecked);
+  };
 
   const [formData, setFormData] = useState({
     weight: "",
@@ -126,7 +134,7 @@ const ShippingCalculator = () => {
           price = 1.6;
           break;
         case den >= 201 && den <= 250:
-          price(1.5);
+          price = 1.5;
           break;
         case den >= 151 && den <= 300:
           price = 1.4;
@@ -195,7 +203,11 @@ const ShippingCalculator = () => {
 
   return (
     <Container className="my-4">
-      <form onSubmit={handleSubmit(onSubmit)} noValidate className="w-full ">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+        className="w-full p-3 md:p-6 bg-white border border-gray-200 rounded-lg shadow-sm"
+      >
         <div className="grid grid-cols-12 md:gap-4">
           {/* <Select
             name="fromcity"
@@ -233,7 +245,7 @@ const ShippingCalculator = () => {
           <InputNumber
             name="weight"
             label="Вес не должен превышать 4000 кг."
-            labelClassName="text-rose-600"
+            labelClassName="text-rose-600 text-xs font-semibold"
             className="col-span-12 md:col-span-12 mb-3 "
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
@@ -256,7 +268,7 @@ const ShippingCalculator = () => {
           </div>
           <div className="col-span-6 md:col-span-6  pb-1.5">
             {!isNaN(calculateDensity()) && (
-              <div className="flex justify-end">
+              <div className="flex justify-end text-blue-800 text-sm font-medium  px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-blue-400 border border-blue-400  items-center">
                 <p className="font-medium text-[16px] md:text-base text-end  text-amber-900">
                   Плотность
                 </p>
@@ -269,55 +281,64 @@ const ShippingCalculator = () => {
 
           <InputNumber
             name="length"
-            label="Макс. 400 см."
-            labelClassName="text-rose-600"
+            label="1 - 400 см"
+            labelClassName="text-rose-600 text-xs font-semibold"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 md:border-e-none border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Длина"
             {...register("length", {
               required: "required ! ",
               pattern: {
-                value: /^([1-9][0-9]?|400)$/,
-                message: "Макс. 400 см.",
+                value: /^(?:[1-3][0-9]{1,2}|[1-9][0-9]{0,1}|400)$/,
+                message: "Макс.400 см.",
               },
             })}
             error={errors.length?.message}
             onChange={handleChange}
+            onKeyDown={(e) =>
+              (e.keyCode === 69 || e.keyCode === 190) && e.preventDefault()
+            }
           />
 
           <InputNumber
             name="width"
-            label="Макс. 250 см."
-            labelClassName="text-rose-600"
+            label="1 - 250 см"
+            labelClassName="text-rose-600 text-xs font-semibold "
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-e-0 md:border-e-1 border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Ширина"
             {...register("width", {
               required: "required ! ",
               pattern: {
-                value: /^([1-9][0-9]?|250)$/,
+                value: /^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|250)$/,
                 message: "Макс. 250 см.",
               },
             })}
             error={errors.width?.message}
             onChange={handleChange}
+            onKeyDown={(e) =>
+              (e.keyCode === 69 || e.keyCode === 190) && e.preventDefault()
+            }
           />
           <InputNumber
             name="height"
-            label="Макс. 250 см."
-            labelClassName="text-rose-600"
+            label="1 - 250 см"
+            labelClassName="text-rose-600 text-xs font-semibold"
             className="col-span-4 md:col-span-4 mb-3 "
             inputClassName="w-full border border-solid border-orange-500 text-[14px] md:text-base"
             placeholder="Высота"
             {...register("height", {
               required: "required ! ",
               pattern: {
-                value: /^([1-9][0-9]?|250)$/,
+                value: /^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|250)$/,
                 message: "Макс. 250 см.",
               },
             })}
             error={errors.height?.message}
             onChange={handleChange}
+            onKeyDown={(e) =>
+              (e.keyCode === 69 || e.keyCode === 190) && e.preventDefault()
+            }
           />
 
           {/* <InputNumber
@@ -335,11 +356,38 @@ const ShippingCalculator = () => {
             textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
             text="Объем в m³"
+            // {...register("packaging", {
+            //   required: "required ! ",
+            // })}
+            // error={errors.packaging?.message}
+            onChange={(e) => setVolume(e.target.value)}
+          />
+
+          <InputNumber
+            className="col-span-12 md:col-span-3 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="hjdsghfdhsghg"
+            // {...register("packaging", {
+            //   required: "required ! ",
+            // })}
+            // error={errors.packaging?.message}
+            onChange={(e) =>
+              setTestValue(parseFloat(volume) * parseFloat(e.target.value))
+            }
+          />
+          <InputNumber
+            className="col-span-12 md:col-span-3 mb-3 "
+            textSpanClassName="border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
+            inputClassName="grow border border-solid border-orange-500 text-[14px] md:text-base"
+            text="hjdsghfdhsghg"
             {...register("packaging", {
               required: "required ! ",
             })}
             error={errors.packaging?.message}
+            placeholder={testValue}
           />
+
           <InputNumber
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
@@ -354,7 +402,7 @@ const ShippingCalculator = () => {
             className="col-span-12 md:col-span-6 mb-3 "
             textSpanClassName="grow border-solid border-orange-500 bg-slate-100 font-medium text-[14px] md:text-base"
             inputClassName="max-w-[144px] md:w-full border border-solid border-orange-500 text-[14px] md:text-base"
-            text="Разгрузка 1 место ($)"
+            text="Разгрузка 1 место"
             {...register("unloading", {
               required: "required ! ",
             })}
@@ -406,6 +454,14 @@ const ShippingCalculator = () => {
             onChange={(value) => setShippingMode(value)}
           />
         </div>
+
+        <CheckBox
+          name="test1"
+          className="col-span-12 md:col-span-6 mb-3 "
+          text="Разгрузка 1 место"
+          textClassName="font-medium text-[14px] md:text-base"
+          onChange={checkHandler}
+        />
 
         {/* {density && (
           <div className="col-span-12 md:col-span-12  pb-1.5">
